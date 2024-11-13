@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubai Traffic Incidents App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <Link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="tabs">
+        <ul>
+            <li><a href="#tab1">Dubai Traffic Incident Map</a></li>
+            <li><a href="#tab2">Data Summary</a></li>
+            <li><a href="#tab3">Data Details</a></li>
+            <li><a href="#tab4">Incident Details</a></li>
+        </ul>
+        <div id="tab1" class="tab-content">
+            <h2>Tab 1 Content</h2>
+            <p>This is the content for Tab 1.</p>
+        </div>
+        <div id="tab2" class="tab-content">
+            <h2>Tab 2 Content</h2>
+            <p>This is the content for Tab 2.</p>
+        </div>
+        <div id="tab3" class="tab-content">
+            <h2>Tab 3 Content</h2>
+            <p>This is the content for Tab 3.</p>
+        </div>
+    </div>
+
+    <script>
+        // Basic JavaScript for tab functionality (you can enhance this)
+        const tabs = document.querySelectorAll('.tabs ul li a');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (event) => {
+                event.preventDefault();
+                const target = document.querySelector(event.target.hash);
+
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                target.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
