@@ -45,6 +45,7 @@ def create_charts(filtered_data):
     incidents_by_year = filtered_data['acci_date'].dt.year.value_counts().sort_index()
     fig_year = px.bar(incidents_by_year, labels={'index': 'Year', 'value': 'Incidents'})
     fig_year.update_layout(showlegend=False)
+    fig_year.update_xaxes(tickformat="%Y")
 
     #monthly incidents
     filtered_data['year_month'] = filtered_data['acci_date'].dt.to_period('M')
@@ -54,9 +55,8 @@ def create_charts(filtered_data):
 
     # Plot the data with Plotly Express
     fig_month = px.bar(incidents_by_year_month, x=incidents_by_year_month.index, y=incidents_by_year_month.values,
-            
             labels={'x': 'Year-Month', 'y': 'Incidents'})
-    fig_month.update_xaxes(tickformat="%Y-%m")
+   
     fig_month.update_layout(showlegend=False)
 
         # Hourly incidents
@@ -90,15 +90,15 @@ def create_charts(filtered_data):
         category_orders={'day_of_week': day_names}
     )
     fig_heatmap.update_xaxes(dtick=1)  # Set tick interval for hour
-
     fig_heatmap.update_layout(
         xaxis_title='Hour of Day',
         yaxis_title='Day of Week',
+        
     )
 
     # Incidents by type (acci_name)
     incidents_by_type = filtered_data['acci_name_en'].value_counts().head(20)
-    fig_type = px.bar(incidents_by_type, labels={'index': 'Type', 'value': 'Incidents'})
+    fig_type = px.bar(incidents_by_type,orientation='h', labels={'index': 'Type', 'value': 'Incidents'})
     fig_type.update_layout(showlegend=False)
 
 

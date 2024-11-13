@@ -33,3 +33,11 @@
 #tab1 {
     display: block; /* Show Tab 1 by default */
 }
+.card {
+    overflow: hidden; /* Prevents chart from overflowing card */
+}
+
+.chart-container { 
+    width: 100%; /* Adjust height as needed */
+    margin: 0 auto; /* Centers chart within card */
+}
