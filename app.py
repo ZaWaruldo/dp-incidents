@@ -44,6 +44,7 @@ def create_charts(filtered_data):
     
     incidents_by_year = filtered_data['acci_date'].dt.year.value_counts().sort_index()
     fig_year = px.bar(incidents_by_year, labels={'index': 'Year', 'value': 'Incidents'})
+    fig_year.update_layout(showlegend=False)
 
     #monthly incidents
     filtered_data['year_month'] = filtered_data['acci_date'].dt.to_period('M')
@@ -56,17 +57,20 @@ def create_charts(filtered_data):
             
             labels={'x': 'Year-Month', 'y': 'Incidents'})
     fig_month.update_xaxes(tickformat="%Y-%m")
+    fig_month.update_layout(showlegend=False)
 
         # Hourly incidents
     filtered_data['acci_hour'] = pd.to_datetime(filtered_data['acci_time'], format='%H:%M:%S').dt.hour
     incidents_by_hour = filtered_data['acci_hour'].value_counts().sort_index()
     fig_hour = px.bar(incidents_by_hour, labels={'index': 'Hour', 'value': 'Incidents'})
+    fig_hour.update_layout(showlegend=False)
 
     # Day of the week incidents
     incidents_by_day = filtered_data['acci_date'].dt.dayofweek.value_counts().sort_index()
     day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     incidents_by_day.index = [day_names[i] for i in incidents_by_day.index]
     fig_day = px.bar(incidents_by_day, labels={'index': 'Day', 'value': 'Incidents'})
+    fig_day.update_layout(showlegend=False)
 
     # Create a new column for day of the week name
     filtered_data['day_of_week'] = filtered_data['acci_date'].dt.day_name()
@@ -77,14 +81,17 @@ def create_charts(filtered_data):
     fig_heatmap = px.density_heatmap(
         heatmap_data, 
         x='acci_hour', 
-        y='day_of_week', 
+        y='day_of_week',
+        nbinsx=24, 
+        nbinsy=7,
         z='Incidents',
-        labels={'acci_hour': 'Hour', 'day_of_week': 'Day of Week', 'Incidents': 'Number of Incidents'},
-        color_continuous_scale='Viridis' # You can choose other color scales
+        labels={'acci_hour': 'Hour', 'day_of_week': 'Day of Week', 'Incidents': 'Incidents'},
+        color_continuous_scale='Viridis', # You can choose other color scales
+        category_orders={'day_of_week': day_names}
     )
+    fig_heatmap.update_xaxes(dtick=1)  # Set tick interval for hour
 
     fig_heatmap.update_layout(
-        title='Incident Density by Hour and Day of Week',
         xaxis_title='Hour of Day',
         yaxis_title='Day of Week',
     )
@@ -92,6 +99,7 @@ def create_charts(filtered_data):
     # Incidents by type (acci_name)
     incidents_by_type = filtered_data['acci_name_en'].value_counts().head(20)
     fig_type = px.bar(incidents_by_type, labels={'index': 'Type', 'value': 'Incidents'})
+    fig_type.update_layout(showlegend=False)
 
 
     year_chart = pio.to_html(fig_year, full_html=False)
